@@ -1,0 +1,9 @@
+# Not needed on the live site
+.claude
+notes
+tools
+assets/3d/boy-meshy.glb
+assets/3d/boy-meshy-textured.glb
+assets/3d/views
+.DS_Store
+**/__pycache__
