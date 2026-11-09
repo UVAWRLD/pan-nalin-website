@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pan Nalin</title>
+  <meta name="description" content="Pan Nalin (Nalin Kumar Pandya), writer, director and producer." />
+  <link rel="preload" href="assets/fonts/AetherTRIAL-A.otf" as="font" type="font/otf" crossorigin />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="is-loading">
+
+  <!-- Loading / intro screen (Figma 1:55) -->
+  <section class="intro" id="intro" aria-label="Introduction">
+    <blockquote class="intro__quote">
+      <p>And if there are no films, how will I dream?</p>
+      <footer class="intro__cite">→ Pan Nalin</footer>
+    </blockquote>
+
+    <button class="intro__seal" type="button" data-enter aria-label="Enter the site">
+      <img src="assets/img/wax-seal.png" alt="" />
+    </button>
+
+    <a class="intro__discover" href="#life" data-enter>
+      <span class="intro__discover-text">Discover the man behind the camera</span>
+      <span class="intro__discover-arrow" aria-hidden="true">→</span>
+    </a>
+
+    <video class="intro__ox" src="assets/video/ox_walk_positive.mp4"
+           autoplay muted loop playsinline aria-hidden="true"></video>
+  </section>
+
+  <!-- Home (Figma 21:35 → 14:2 on scroll) -->
+  <header class="site-header">
+    <a class="brand" href="#top">
+      <img class="brand__mark" src="assets/img/logo-sun-seal.png" alt="" />
+      <span class="brand__name">Pan Nalin</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a href="#life">Life</a><span class="nav__dot" aria-hidden="true">•</span>
+      <a href="#films">Films</a><span class="nav__dot" aria-hidden="true">•</span>
+      <a href="#thoughts">Thoughts</a><span class="nav__dot" aria-hidden="true">•</span>
+      <a href="#awards">Awards</a><span class="nav__dot" aria-hidden="true">•</span>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <div class="hero" aria-hidden="true">
+      <div class="hero__image"></div>
+      <canvas class="hero__canvas"></canvas>
+      <div class="hero__vignette"></div>
+    </div>
+
+    <article class="bio" id="life">
+      <div class="bio__portrait">
+        <img src="assets/img/portrait-pan-nalin.png" alt="Portrait of Pan Nalin" />
+      </div>
+
+      <div class="bio__card">
+        <span class="bio__handle" aria-hidden="true"></span>
+
+        <h1 class="bio__name">Nalin Kumar Pandya</h1>
+        <p class="bio__role">writer, director, and producer</p>
+        <img class="bio__mark" src="assets/img/logo-sun-seal.png" alt="" />
+
+        <div class="bio__text">
+          <p>Nalin Kumar Pandya, known to audiences as Pan Nalin, was born in Adtala, a village in the Amreli district of Saurashtra, Gujarat. His father ran a tea stall at a small railway junction, a station he would later describe as nobody’s destination, and much of his childhood was spent on its platforms, watching trains cross the open fields. He didn’t see a film until he was about eight. By then he had already been asking his parents where light comes from, and where it goes at night.</p>
+          <p>He never let go of that question. He studied fine art at M.S. University in Baroda and design at NID Ahmedabad, where he ran the film club. He shot some fifty wedding videos to pay his way, and made animations and silent shorts on old cameras found at Ahmedabad’s Sunday flea market. Documentaries for Discovery, Canal+ and the BBC took him across India and into the Himalayas.</p>
+          <p>His first feature, Samsara (2001), followed a young monk torn between desire and devotion, and travelled to audiences around the world. Valley of Flowers moved from Himalayan myth to modern Tokyo. Faith Connections captured the Kumbh Mela, the largest gathering of people on earth. Angry Indian Goddesses, called India’s first female buddy film, won over audiences in Toronto and Rome.</p>
+          <p>With Last Film Show (2021), he finally turned the camera on his own childhood: a boy at a railway station who falls in love with the light of a projector. The film became India’s official entry to the Academy Awards and won the National Film Award for Best Gujarati Film.</p>
+          <p>Through his company, Monsoon Films, he continues to make films about seekers, and about the light that leads them.</p>
+        </div>
+
+        <img class="bio__fade" src="assets/img/card-bottom-blur.png" alt="" aria-hidden="true" />
+      </div>
+    </article>
+  </main>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
+        "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/2.4.0/spark.module.js"
+      }
+    }
+  </script>
+  <script src="main.js"></script>
+  <script type="module" src="hero3d.js"></script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+.DS_Store
+assets/3d/boy-meshy.glb
+assets/3d/boy-meshy-textured.glb
+notes/
+__pycache__/
+*.pyc
+.vercel

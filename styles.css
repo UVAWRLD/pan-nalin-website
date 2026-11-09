@@ -1,0 +1,590 @@
+/* ------------------------------------------------------------------
+   Pan Nalin — styles
+   Desktop (≥1100px): designs are drawn on a 1920px-wide Figma frame.
+   `--u` is one Figma pixel scaled to the viewport width, so
+   `calc(N * var(--u))` reproduces the design at any desktop width.
+   Below 1100px the layout switches to a fluid, stacked version.
+------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Aether";
+  src: url("assets/fonts/AetherTRIAL-A.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Denim";
+  src: url("assets/fonts/Denim-TRIAL-Light.otf") format("opentype");
+  font-weight: 300;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Denim";
+  src: url("assets/fonts/Denim-TRIAL-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Denim";
+  src: url("assets/fonts/Denim-TRIAL-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  --u: calc(100vw / 1920);
+  --gutter: 16px;
+
+  --ink: #070904;
+  --paper: #f3f3f1;
+  --white: #ffffff;
+  --white-87: rgba(255, 255, 255, 0.87);
+  --glass: rgba(102, 102, 102, 0.31);
+  --glass-edge: rgba(243, 243, 241, 0.31);
+  --handle: #d9d9d9;
+
+  --font-display: "Aether", Georgia, serif;
+  --font-text: "Denim", "Helvetica Neue", Arial, sans-serif;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--white);
+  font-family: var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+img, video, canvas { display: block; max-width: 100%; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+
+/* ------------------------------------------------------------------
+   Intro / loading screen (Figma 1:55)
+------------------------------------------------------------------- */
+
+.intro {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  height: 100vh;
+  height: 100dvh;
+  background: var(--paper);
+  color: var(--ink);
+  overflow: hidden;
+  transition: opacity 900ms var(--ease-out), visibility 0s linear 900ms;
+}
+
+body:not(.is-loading) .intro {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+body.is-loading { overflow: hidden; }
+
+.intro__quote {
+  position: absolute;
+  left: calc(151 * var(--u));
+  top: calc(140 * var(--u));
+  margin: 0;
+  width: calc(589 * var(--u));
+}
+
+.intro__quote p {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: calc(90.775 * var(--u));
+  line-height: 0.873;
+  letter-spacing: -0.03em;
+}
+
+.intro__cite {
+  margin-top: calc(26.94 * var(--u));
+  font-weight: 400;
+  font-size: max(calc(22.694 * var(--u)), 13px);
+  line-height: 0.873;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+/* Seal sits in the middle of the screen (Figma: 643,416 · 634.85² on 1920×1365) */
+.intro__seal {
+  position: absolute;
+  left: 50%;
+  top: 53.7%;
+  width: min(calc(634.85 * var(--u)), 46.5vh);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  transition: transform 600ms var(--ease-out), filter 600ms var(--ease-out);
+}
+
+.intro__seal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.intro__seal:hover,
+.intro__seal:focus-visible {
+  transform: scale(1.03) rotate(-2deg);
+  filter: drop-shadow(0 calc(18 * var(--u)) calc(30 * var(--u)) rgba(7, 9, 4, 0.18));
+  outline: none;
+}
+
+/* Bottom-right group, anchored to the bottom so short screens keep it */
+.intro__discover {
+  position: absolute;
+  right: calc(350.37 * var(--u));
+  bottom: calc(161.6 * var(--u));
+  display: block;
+  width: calc(181.5 * var(--u));
+  min-width: 118px;
+  height: calc(50 * var(--u));
+  min-height: 34px;
+  font-size: max(calc(22.142 * var(--u)), 14px);
+}
+
+.intro__discover-text {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 7.6em;
+  font-weight: 300;
+  font-size: 1em;
+  line-height: 0.873;
+  letter-spacing: -0.03em;
+}
+
+.intro__discover-arrow {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 1.15em;
+  height: 1.15em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 500;
+  line-height: 0.873;
+  letter-spacing: -0.03em;
+  transform: rotate(-45deg);
+  transition: transform 400ms var(--ease-out);
+}
+
+.intro__discover:hover .intro__discover-arrow,
+.intro__discover:focus-visible .intro__discover-arrow {
+  transform: rotate(-45deg) translateX(4px);
+}
+
+.intro__ox {
+  position: absolute;
+  right: calc(167.5 * var(--u));
+  bottom: calc(155 * var(--u));
+  width: max(calc(160 * var(--u)), 96px);
+  aspect-ratio: 160 / 111;
+  object-fit: cover;
+}
+
+/* ------------------------------------------------------------------
+   Header (logo + nav)
+------------------------------------------------------------------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+  height: 0;
+}
+
+/* Shade behind the header once the card scrolls under it */
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: max(calc(190 * var(--u)), 120px);
+  background: linear-gradient(rgba(7, 9, 4, 0.94), rgba(7, 9, 4, 0.82) 60%, rgba(7, 9, 4, 0));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-mask-image: linear-gradient(#000 65%, transparent);
+  mask-image: linear-gradient(#000 65%, transparent);
+  opacity: 0;
+  transition: opacity 400ms ease;
+  pointer-events: none;
+}
+
+body.is-scrolled .site-header::before { opacity: 1; }
+
+.brand {
+  position: absolute;
+  left: calc(54.53 * var(--u));
+  top: calc(45.49 * var(--u));
+  display: flex;
+  align-items: flex-start;
+  gap: calc(7.1 * var(--u));
+}
+
+.brand__mark {
+  width: max(calc(76.721 * var(--u)), 44px);
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.brand__name {
+  margin-top: calc(12.77 * var(--u));
+  width: 3.7em;
+  font-family: var(--font-display);
+  font-size: max(calc(32.899 * var(--u)), 20px);
+  line-height: 0.873;
+  letter-spacing: -0.03em;
+}
+
+.nav {
+  position: absolute;
+  right: calc(92 * var(--u));
+  top: calc(69 * var(--u));
+  display: flex;
+  align-items: center;
+  gap: calc(25 * var(--u));
+  font-weight: 400;
+  line-height: 0.873;
+  white-space: nowrap;
+}
+
+.nav a {
+  font-size: max(calc(18.527 * var(--u)), 14px);
+  letter-spacing: -0.03em;
+  transition: opacity 200ms ease;
+}
+
+.nav a:hover,
+.nav a:focus-visible { opacity: 0.6; }
+
+.nav__dot {
+  font-size: max(calc(36 * var(--u)), 22px);
+  letter-spacing: -0.03em;
+}
+
+/* ------------------------------------------------------------------
+   Hero background
+   The 3D scene (hero3d.js) draws into .hero__canvas. The flat photo in
+   .hero__image is the fallback while it loads, without WebGL, or with
+   reduced motion.
+------------------------------------------------------------------- */
+
+.hero {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--ink);
+}
+
+.hero__image {
+  position: absolute;
+  inset: 0;
+  background: url("assets/img/hero-boy-film-strip.png") 53% center / cover no-repeat;
+  transition: opacity 1200ms var(--ease-out);
+}
+
+.hero__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-out);
+}
+
+.hero.is-3d .hero__canvas { opacity: 1; }
+.hero.is-3d .hero__image { opacity: 0; }
+
+/* Darkens the screen edges, where the 3D room runs out of detail. Strength
+   and size come from SETTINGS.render in hero3d.js. */
+.hero__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1200ms var(--ease-out);
+  background:
+    /* the very top: at the extreme camera positions the room runs out there */
+    linear-gradient(to bottom, rgba(1, 1, 1, var(--vignette-strength, 0.85)) 0%, transparent 10%),
+    radial-gradient(
+      ellipse at 50% 45%,
+      transparent calc(var(--vignette-size, 0.62) * 100%),
+      rgba(1, 1, 1, var(--vignette-strength, 0.85)) 100%
+    );
+}
+.hero.is-3d .hero__vignette { opacity: 1; }
+
+/* ------------------------------------------------------------------
+   Biography card — desktop (Figma 21:87 → 14:2)
+------------------------------------------------------------------- */
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+.bio {
+  position: relative;
+  width: calc(1368 * var(--u));
+  /* Card top sits at y=1223 on load (21:87) and always peeks into view */
+  margin: min(calc(1223 * var(--u)), calc(100vh - calc(142 * var(--u)))) auto calc(120 * var(--u));
+}
+
+.bio__portrait {
+  position: absolute;
+  z-index: 2;
+  left: calc(36 * var(--u));
+  top: calc(-87 * var(--u));
+  width: calc(230 * var(--u));
+  height: calc(345 * var(--u));
+  pointer-events: none;
+}
+
+.bio__portrait img {
+  /* Figma inset: -10.06% -14.65% -19.33% -29.43% (room for the cut-out's shadow) */
+  position: absolute;
+  top: -10.06%;
+  left: -29.43%;
+  width: 144.08%;
+  height: 129.39%;
+  max-width: none;
+}
+
+.bio__card {
+  position: relative;
+  min-height: calc(867 * var(--u));
+  padding: calc(247 * var(--u)) 0 calc(150 * var(--u)) calc(278 * var(--u));
+  background: var(--glass);
+  border: max(calc(1.853 * var(--u)), 1px) solid var(--glass-edge);
+  border-radius: max(calc(11.116 * var(--u)), 8px);
+  -webkit-backdrop-filter: blur(calc(32 * var(--u)));
+  backdrop-filter: blur(calc(32 * var(--u)));
+}
+
+.bio__handle {
+  position: absolute;
+  left: 50%;
+  top: calc(13.44 * var(--u));
+  width: calc(181.562 * var(--u));
+  height: max(calc(2.779 * var(--u)), 2px);
+  transform: translateX(-50%);
+  background: var(--handle);
+  border-radius: 40px;
+  box-shadow: inset calc(2.779 * var(--u)) calc(2.779 * var(--u)) calc(6.299 * var(--u)) 0 rgba(0, 0, 0, 0.25);
+}
+
+.bio__name {
+  position: absolute;
+  left: calc(273 * var(--u));
+  top: calc(61.2 * var(--u));
+  width: calc(617.021 * var(--u));
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: calc(90.572 * var(--u));
+  line-height: 0.873;
+  letter-spacing: -0.03em;
+}
+
+.bio__role {
+  position: absolute;
+  right: calc(256.09 * var(--u));
+  top: calc(71 * var(--u));
+  width: 6.85em;
+  margin: 0;
+  font-weight: 500;
+  font-size: max(calc(18.527 * var(--u)), 13px);
+  line-height: 0.873;
+  letter-spacing: -0.03em;
+  text-align: right;
+}
+
+.bio__mark {
+  position: absolute;
+  left: calc(1070 * var(--u));
+  top: calc(111 * var(--u));
+  width: calc(41.685 * var(--u));
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.bio__text {
+  width: calc(854.083 * var(--u));
+  font-weight: 300;
+  font-size: max(calc(16.674 * var(--u)), 14px);
+  line-height: 1.41;
+  letter-spacing: -0.02em;
+  color: var(--white-87);
+}
+
+.bio__text p { margin: 0 0 1.41em; }
+.bio__text p:last-child { margin-bottom: 0; }
+
+/* Soft blurred strip that follows the bottom of the viewport over the card */
+.bio__fade {
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  width: calc(1368 * var(--u));
+  max-width: none;
+  height: calc(84 * var(--u));
+  margin: calc(-84 * var(--u)) 0 0 calc(-278 * var(--u) - max(calc(1.853 * var(--u)), 1px));
+  object-fit: cover;
+  filter: blur(calc(4.15 * var(--u)));
+  pointer-events: none;
+}
+
+/* ------------------------------------------------------------------
+   Tablet & phone (< 1100px): fluid, stacked layout
+------------------------------------------------------------------- */
+
+@media (max-width: 1099.98px) {
+  :root { --gutter: clamp(16px, 4vw, 40px); }
+
+  /* Intro */
+  .intro__quote {
+    left: var(--gutter);
+    top: clamp(72px, 12vh, 140px);
+    width: min(589px, calc(100% - 2 * var(--gutter)));
+  }
+  .intro__quote p { font-size: clamp(44px, 9.5vw, 80px); }
+  .intro__cite { margin-top: 0.9em; font-size: clamp(14px, 2.2vw, 20px); }
+
+  .intro__seal {
+    top: 58%;
+    width: min(74vw, 44vh, 520px);
+  }
+
+  .intro__discover {
+    right: calc(var(--gutter) + clamp(96px, 16vw, 140px) + 18px);
+    bottom: calc(var(--gutter) + 8px);
+    font-size: clamp(14px, 2.2vw, 20px);
+    width: 8.6em;
+    height: 2.3em;
+  }
+  .intro__ox {
+    right: var(--gutter);
+    bottom: var(--gutter);
+    width: clamp(96px, 16vw, 140px);
+  }
+
+  /* Header */
+  .brand { left: var(--gutter); top: var(--gutter); gap: 6px; }
+  .brand__name { margin-top: 7px; }
+  .nav {
+    right: var(--gutter);
+    top: calc(var(--gutter) + 15px);
+    gap: clamp(8px, 2vw, 18px);
+  }
+
+  /* Card */
+  .bio {
+    width: min(760px, calc(100% - 2 * var(--gutter)));
+    margin: calc(100vh - clamp(110px, 27vh, 260px)) auto 64px;
+    margin-top: calc(100svh - clamp(110px, 27vh, 260px));
+  }
+
+  .bio__portrait {
+    left: clamp(14px, 4vw, 32px);
+    top: -64px;
+    width: clamp(104px, 22vw, 160px);
+    height: auto;
+    aspect-ratio: 230 / 345;
+  }
+
+  .bio__card {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      ".    mark"
+      "name name"
+      "role role"
+      "text text";
+    row-gap: 16px;
+    min-height: 0;
+    padding: 28px clamp(20px, 5vw, 44px) 56px;
+    -webkit-backdrop-filter: blur(24px);
+    backdrop-filter: blur(24px);
+  }
+
+  .bio__handle { top: 10px; width: 120px; }
+
+  .bio__mark {
+    grid-area: mark;
+    position: static;
+    width: 36px;
+  }
+
+  .bio__name {
+    grid-area: name;
+    position: static;
+    width: auto;
+    margin-top: clamp(40px, 10vw, 110px);
+    font-size: clamp(48px, 11vw, 84px);
+  }
+
+  .bio__role {
+    grid-area: role;
+    position: static;
+    width: auto;
+    text-align: left;
+    font-size: 15px;
+    line-height: 1.1;
+  }
+
+  .bio__text {
+    grid-area: text;
+    width: auto;
+    max-width: 62ch;
+    margin-top: 12px;
+    font-size: 16px;
+  }
+
+  .bio__fade { display: none; }
+}
+
+/* Small phones: stack the nav under the logo so nothing collides */
+@media (max-width: 520px) {
+  .nav {
+    left: var(--gutter);
+    right: auto;
+    top: calc(var(--gutter) + 58px);
+    gap: 9px;
+  }
+  .site-header::before { height: 150px; }
+  .nav a { font-size: 14px; }
+  .nav__dot { font-size: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .intro,
+  .intro__seal,
+  .intro__discover-arrow,
+  .hero__image,
+  .hero__canvas { transition: none; }
+}
