@@ -85,6 +85,13 @@ async function start() {
 function glassWave(scene) {
   const els = [...document.querySelectorAll(
     ".brand, .nav, .bio__portrait, .bio__meta, .bio__name, .bio__role, .bio__mark, .bio__tag, .bio__text p, .bio__films, .bio__card")];
+  // Safari (and every browser on iPhone, all WebKit) draws SVG filters on
+  // page elements badly: parts get cut into boxes or vanish. There the
+  // glass is made from what WebKit draws well: the same skew and stretch,
+  // with the colour fringes as red and blue text shadows.
+  const ua = navigator.userAgent;
+  const lite = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) ||
+    (/AppleWebKit/.test(ua) && !/(Chrome|Chromium|Edg|OPR|Firefox)\//.test(ua));
   const NS = "http://www.w3.org/2000/svg";
   const svg = document.createElementNS(NS, "svg");
   svg.setAttribute("aria-hidden", "true");
@@ -118,7 +125,7 @@ function glassWave(scene) {
   });
   const off = (p) => {
     if (!p.on) return;
-    p.el.style.filter = ""; p.el.style.transform = ""; p.on = false;
+    p.el.style.filter = ""; p.el.style.transform = ""; p.el.style.textShadow = ""; p.on = false;
   };
 
   (function loop() {
@@ -134,7 +141,11 @@ function glassWave(scene) {
       const d = 1 - y / H - (-0.7 + 2.6 * t + 0.3 * (1 - x * x));   // as in sky3d.js
       const k = Math.exp((-d * d) / 0.14);
       if (k < 0.02) { off(p); continue; }
-      if (p.glass) {
+      if (p.glass && lite) {
+        const c = (9 * k * s).toFixed(1);
+        p.el.style.textShadow = `0 -${c}px rgba(255, 40, 90, ${(0.55 * k).toFixed(2)}), 0 ${c}px rgba(40, 140, 255, ${(0.55 * k).toFixed(2)})`;
+        p.el.style.transform = `${p.base}translateY(${(-20 * k * s).toFixed(1)}px) skewX(${(-x * 7 * k).toFixed(2)}deg) scaleY(${(1 + 0.07 * k).toFixed(3)})`;
+      } else if (p.glass) {
         p.disp.setAttribute("scale", (70 * k * s).toFixed(1));
         p.blur.setAttribute("stdDeviation", `${(0.6 * k * s).toFixed(2)} ${(8 * k * s).toFixed(2)}`);
         p.red.setAttribute("dy", (-11 * k * s).toFixed(1));
