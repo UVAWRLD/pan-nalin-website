@@ -71,6 +71,7 @@ async function start() {
 
   glassWave(scene);
   scene.start();
+  if (matchMedia("(pointer: coarse)").matches) tiltSteering(scene);
   hero.classList.add("is-3d");
   window.__hero = scene;
 }
@@ -219,4 +220,21 @@ function skyTransition(scene, pullDistance) {
       root.style.setProperty("--hold", `${s.hold.toFixed(1)}px`);
     }
   })(performance.now());
+}
+
+// Phones and tablets: look around the sky by tilting the device. iOS asks
+// for motion access on the intro tap (main.js sets window.__tilt); if that
+// tap never happened, the first tap on the page asks instead. Without
+// access, a finger drag still steers.
+function tiltSteering(scene) {
+  const go = (state) => { if (state === "granted") scene.enableTilt(); };
+  const DOE = window.DeviceOrientationEvent;
+  if (!DOE) return;
+  if (typeof DOE.requestPermission !== "function") return go("granted");
+  if (window.__tilt) return void window.__tilt.then(go);
+  const ask = () => {
+    removeEventListener("touchend", ask);
+    (window.__askTilt ? window.__askTilt() : DOE.requestPermission()).then(go, () => {});
+  };
+  addEventListener("touchend", ask, { passive: true });
 }

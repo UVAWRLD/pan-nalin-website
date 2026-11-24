@@ -438,7 +438,26 @@ export async function createSkyScene(canvas, options = {}) {
       steer.last = performance.now();
     }
   };
-  const onDown = (e) => { if (e.pointerType !== "mouse") steer.drag = { id: e.pointerId, x: e.clientX, yaw: target.yaw / o.maxYaw }; };
+  // Tilt (phones): the camera follows how the phone is held, measured from a
+  // rest pose that slowly re-centres itself, so any way of holding it works
+  // and a quick turn of the wrist looks around. Tilting right looks right,
+  // tipping the top away looks up into the sky.
+  const tilt = { on: false, x0: null, y0: null, angle: 0 };
+  const onTilt = (e) => {
+    if (e.beta == null || e.gamma == null) return;
+    const a = (screen.orientation?.angle ?? window.orientation ?? 0) % 360;
+    let lr = e.gamma, ud = e.beta;                          // portrait
+    if (a === 90) { lr = e.beta; ud = -e.gamma; }
+    else if (a === 270 || a === -90) { lr = -e.beta; ud = e.gamma; }
+    else if (a === 180) { lr = -e.gamma; ud = -e.beta; }
+    if (tilt.x0 === null || a !== tilt.angle) { tilt.x0 = lr; tilt.y0 = ud; tilt.angle = a; }
+    tilt.x0 += (lr - tilt.x0) * 0.004;
+    tilt.y0 += (ud - tilt.y0) * 0.004;
+    steer.yaw = -clamp((lr - tilt.x0) / 16, -1, 1);
+    steer.pitch = clamp((ud - tilt.y0) / 12, -1, 1);
+    steer.last = performance.now();
+  };
+  const onDown = (e) => { if (e.pointerType !== "mouse" && !tilt.on) steer.drag = { id: e.pointerId, x: e.clientX, yaw: target.yaw / o.maxYaw }; };
   const onUp = (e) => { if (steer.drag && e.pointerId === steer.drag.id) steer.drag = null; };
 
   function tick(now) {
@@ -476,6 +495,12 @@ export async function createSkyScene(canvas, options = {}) {
     setBlur(b, now = false) { target.blur = clamp(b, 0, 1); if (now) { view.blur = target.blur; dirty = true; } },
     setPull(p, now = false) { target.pull = clamp(p, 0, 1); if (now) { view.pull = target.pull; project(); render(0); } },
     setPaused(p) { paused = !!p; },
+    // Steer by tilting the phone (call after any permission prompt).
+    enableTilt() {
+      if (tilt.on || o.still || reduce || !("DeviceOrientationEvent" in window)) return;
+      tilt.on = true; steer.drag = null;
+      addEventListener("deviceorientation", onTilt, { passive: true });
+    },
     resize() { resize(); render(0); },
     start() {
       addEventListener("resize", resize);
@@ -492,6 +517,7 @@ export async function createSkyScene(canvas, options = {}) {
       cancelAnimationFrame(raf); io?.disconnect();
       removeEventListener("resize", resize); removeEventListener("pointermove", onMove);
       removeEventListener("pointerdown", onDown); removeEventListener("pointerup", onUp); removeEventListener("pointercancel", onUp);
+      removeEventListener("deviceorientation", onTilt);
     },
   };
 }

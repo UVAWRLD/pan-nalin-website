@@ -3,6 +3,14 @@
   const body = document.body;
   const intro = document.getElementById("intro");
 
+  // Motion access for steering the 3D sky by tilt (iOS asks once, in a tap).
+  window.__askTilt = () => (window.__tilt ||= (() => {
+    const DOE = window.DeviceOrientationEvent;
+    return typeof DOE?.requestPermission === "function"
+      ? DOE.requestPermission().catch(() => "denied")
+      : Promise.resolve("granted");
+  })());
+
   // --- Intro: click the seal or "Discover" to enter -------------------------
   // hero3d.js listens for "pannalin:enter" to start its camera move.
   const enter = (event) => {
@@ -10,6 +18,9 @@
     if (!body.classList.contains("is-loading")) return;
     window.scrollTo(0, 0);
     body.classList.remove("is-loading");
+    // iPhone: motion access must be asked for inside the tap. hero3d.js
+    // waits on this to steer the 3D sky by tilting the phone.
+    window.__askTilt();
     intro.querySelector("video")?.pause();
     document.activeElement?.blur();
     intro.inert = true;
