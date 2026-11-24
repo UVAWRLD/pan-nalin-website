@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boys and the sky</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #c9d4dc; overflow: hidden; }
+    canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; touch-action: pan-y;
+             filter: saturate(1.06) contrast(0.95) brightness(1.03); }
+    /* a soft, warm haze over everything, strongest towards the top: dreamy, not foggy */
+    .haze { position: fixed; inset: 0; pointer-events: none; mix-blend-mode: screen; opacity: 0.35;
+            background: radial-gradient(ellipse 90% 70% at 50% 35%, rgba(255, 236, 205, 0.55), rgba(255, 236, 205, 0) 70%),
+                        linear-gradient(to bottom, rgba(255, 250, 240, 0.35), rgba(255, 250, 240, 0) 55%); }
+  </style>
+</head>
+<body>
+  <!-- The boys and the sky, in 3D. The camera drifts slowly around them on its
+       own; the pointer (or a finger dragging sideways) steers it. For checking:
+       ?still&yaw=-20&pitch=2 holds a view, ?only=backdrop,boy_3 draws just those. -->
+  <canvas id="scene"></canvas>
+  <div class="haze"></div>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js" } }
+  </script>
+  <script type="module">
+    import { createScene } from "./scene3d.js";
+    const q = new URLSearchParams(location.search);
+    const num = (k, d) => (q.has(k) ? Number(q.get(k)) : d);
+    const small = matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+    const scene = await createScene(document.getElementById("scene"), {
+      base: "assets/sky/",
+      still: q.has("still"), only: q.get("only")?.split(","), half: small, meshStep: small ? 2 : 1,
+      zoom: num("zoom", 1.1), focusX: 0.5, focusY: num("focusy", 0.75),
+      maxYaw: 20, maxPitch: 3, maxDolly: 0.6,
+      drift: 1, driftSpeed: 0.35, follow: 1.6,
+    });
+    if (q.has("yaw") || q.has("pitch")) scene.setView(num("yaw", 0), num("pitch", 0), num("dolly", 0));
+    scene.start();
+    window.__scene = scene;
+    window.__ready = true;
+  </script>
+</body>
+</html>

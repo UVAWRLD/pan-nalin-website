@@ -5,3 +5,6 @@ notes/
 __pycache__/
 *.pyc
 .vercel
+.venv/
+work/
+node_modules/

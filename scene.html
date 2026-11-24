@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pan Nalin — the scene</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+    canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; touch-action: pan-y; }
+  </style>
+</head>
+<body>
+  <!-- The 3D scene on its own, full window. Move the pointer (or drag on a
+       touch screen) to look around; the wheel moves the camera in and out.
+       For checking: ?still&yaw=-6&pitch=2&dolly=0.5 holds a view,
+       ?only=front,boy draws just those layers, ?half uses the phone pictures. -->
+  <canvas id="scene"></canvas>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js" } }
+  </script>
+  <script type="module">
+    import { createScene } from "./scene3d.js";
+    const q = new URLSearchParams(location.search);
+    const num = (k, d) => (q.has(k) ? Number(q.get(k)) : d);
+    const small = matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+    const options = { still: q.has("still"), only: q.get("only")?.split(","), half: q.has("half") || small, meshStep: num("mesh", small ? 2 : 1) };
+    for (const k of ["zoom", "maxYaw", "maxPitch", "maxDolly", "drift", "focusX", "focusY"]) {
+      if (q.has(k.toLowerCase())) options[k] = Number(q.get(k.toLowerCase()));
+    }
+    if (q.has("dpr")) options.maxPixelRatio = Number(q.get("dpr"));
+    const scene = await createScene(document.getElementById("scene"), options);
+    if (q.has("yaw") || q.has("pitch") || q.has("dolly")) scene.setView(num("yaw", 0), num("pitch", 0), num("dolly", 0));
+    let dolly = 0;
+    addEventListener("wheel", (e) => { dolly = Math.min(1, Math.max(0, dolly - e.deltaY * 0.0015)); scene.setDolly(dolly); }, { passive: true });
+    scene.start();
+    window.__scene = scene;
+    window.__ready = true;
+  </script>
+</body>
+</html>

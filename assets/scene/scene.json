@@ -1,0 +1,196 @@
+{
+ "width": 3840,
+ "height": 2731,
+ "focal": 6312.0,
+ "cx": 1920.0,
+ "cy": 1365.5,
+ "pivot_depth": 2.09375,
+ "pad": [
+  648,
+  336,
+  648,
+  228
+ ],
+ "layers": [
+  {
+   "name": "surround",
+   "color": "surround.webp",
+   "color_half": "surround@half.webp",
+   "depth": "surround-depth.png",
+   "opaque": true,
+   "guard": [
+    0,
+    0
+   ],
+   "inv_min": 0.19234655797481537,
+   "inv_max": 0.6582870483398438,
+   "grid": [
+    857,
+    550
+   ],
+   "rect": [
+    -648.0,
+    -336.0,
+    5136.0,
+    3294.0
+   ],
+   "cell": 6.0
+  },
+  {
+   "name": "far",
+   "color": "far.webp",
+   "color_half": "far@half.webp",
+   "depth": "far-depth.png",
+   "opaque": false,
+   "guard": [
+    0,
+    0
+   ],
+   "inv_min": 0.1923460066318512,
+   "inv_max": 0.5210440754890442,
+   "grid": [
+    641,
+    457
+   ],
+   "rect": [
+    0.0,
+    0.0,
+    3840.0,
+    2731.0
+   ],
+   "cell": 6.0,
+   "alpha": "far-alpha.png",
+   "alpha_half": "far@half-alpha.png"
+  },
+  {
+   "name": "objects",
+   "color": "objects.webp",
+   "color_half": "objects@half.webp",
+   "depth": "objects-depth.png",
+   "opaque": false,
+   "guard": [
+    0,
+    0
+   ],
+   "inv_min": 0.33116576075553894,
+   "inv_max": 0.40661200881004333,
+   "grid": [
+    354,
+    297
+   ],
+   "rect": [
+    -648.0,
+    660.0,
+    2113.0,
+    1771.0
+   ],
+   "cell": 6.0,
+   "alpha": "objects-alpha.png",
+   "alpha_half": "objects@half-alpha.png"
+  },
+  {
+   "name": "film_back",
+   "color": "film_back.webp",
+   "color_half": "film_back@half.webp",
+   "depth": "film_back-depth.png",
+   "opaque": false,
+   "guard": [
+    0,
+    0
+   ],
+   "inv_min": 0.35338112711906433,
+   "inv_max": 0.5253600478172302,
+   "grid": [
+    245,
+    388
+   ],
+   "rect": [
+    24.0,
+    288.0,
+    1462.0,
+    2319.0
+   ],
+   "cell": 6.0,
+   "alpha": "film_back-alpha.png",
+   "alpha_half": "film_back@half-alpha.png"
+  },
+  {
+   "name": "boy",
+   "color": "boy.webp",
+   "color_half": "boy@half.webp",
+   "depth": "boy-depth.png",
+   "opaque": false,
+   "guard": [
+    0,
+    0
+   ],
+   "inv_min": 0.389760822057724,
+   "inv_max": 0.562633752822876,
+   "grid": [
+    595,
+    432
+   ],
+   "rect": [
+    78.0,
+    150.0,
+    3559.0,
+    2581.0
+   ],
+   "cell": 6.0,
+   "alpha": "boy-alpha.png",
+   "alpha_half": "boy@half-alpha.png"
+  },
+  {
+   "name": "film_front",
+   "color": "film_front.webp",
+   "color_half": "film_front@half.webp",
+   "depth": "film_front-depth.png",
+   "opaque": false,
+   "guard": [
+    0,
+    0
+   ],
+   "inv_min": 0.3814825415611267,
+   "inv_max": 0.5663555860519409,
+   "grid": [
+    156,
+    343
+   ],
+   "rect": [
+    1086.0,
+    558.0,
+    927.0,
+    2049.0
+   ],
+   "cell": 6.0,
+   "alpha": "film_front-alpha.png",
+   "alpha_half": "film_front@half-alpha.png"
+  },
+  {
+   "name": "hand",
+   "color": "hand.webp",
+   "color_half": "hand@half.webp",
+   "depth": "hand-depth.png",
+   "opaque": false,
+   "guard": [
+    0,
+    0
+   ],
+   "inv_min": 0.5088046789169312,
+   "inv_max": 0.5771540999412537,
+   "grid": [
+    176,
+    146
+   ],
+   "rect": [
+    1506.0,
+    738.0,
+    1046.0,
+    868.0
+   ],
+   "cell": 6.0,
+   "alpha": "hand-alpha.png",
+   "alpha_half": "hand@half-alpha.png"
+  }
+ ]
+}

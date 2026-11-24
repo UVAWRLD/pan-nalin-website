@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["tools/serve.py", "8417"],
       "port": 8417
+    },
+    {
+      "name": "site-3d",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["tools/serve.py", "8431"],
+      "port": 8431
     }
   ]
 }

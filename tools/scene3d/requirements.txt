@@ -1,0 +1,13 @@
+# Python 3.12, e.g.  uv venv --python 3.12 .venv && uv pip install --python .venv/bin/python -r tools/scene3d/requirements.txt
+torch
+torchvision
+numpy
+pillow
+opencv-python-headless
+scipy
+transformers
+timm
+huggingface_hub
+safetensors
+diffusers
+accelerate

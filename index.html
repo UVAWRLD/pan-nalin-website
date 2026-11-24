@@ -49,7 +49,7 @@
     <div class="hero" aria-hidden="true">
       <div class="hero__image"></div>
       <canvas class="hero__canvas"></canvas>
-      <div class="hero__vignette"></div>
+      <div class="hero__grain"></div>
     </div>
 
     <article class="bio" id="life">
@@ -60,29 +60,59 @@
       <div class="bio__card">
         <span class="bio__handle" aria-hidden="true"></span>
 
-        <h1 class="bio__name">Nalin Kumar Pandya</h1>
-        <p class="bio__role">writer, director, and producer</p>
-        <img class="bio__mark" src="assets/img/logo-sun-seal.png" alt="" />
+        <header class="bio__head">
+          <p class="bio__meta"><span>Life</span><span>Mumbai</span><span>Goa</span><span>Paris</span></p>
+          <h1 class="bio__name">Nalin Kumar Pandya <span>known as Pan&nbsp;Nalin</span></h1>
+          <p class="bio__role">Writer, director and producer</p>
+          <img class="bio__mark" src="assets/img/logo-sun-seal.png" alt="" />
+        </header>
 
         <div class="bio__text">
-          <p>Nalin Kumar Pandya, known to audiences as Pan Nalin, was born in Adtala, a village in the Amreli district of Saurashtra, Gujarat. His father ran a tea stall at a small railway junction, a station he would later describe as nobody’s destination, and much of his childhood was spent on its platforms, watching trains cross the open fields. He didn’t see a film until he was about eight. By then he had already been asking his parents where light comes from, and where it goes at night.</p>
-          <p>He never let go of that question. He studied fine art at M.S. University in Baroda and design at NID Ahmedabad, where he ran the film club. He shot some fifty wedding videos to pay his way, and made animations and silent shorts on old cameras found at Ahmedabad’s Sunday flea market. Documentaries for Discovery, Canal+ and the BBC took him across India and into the Himalayas.</p>
-          <p>His first feature, Samsara (2001), followed a young monk torn between desire and devotion, and travelled to audiences around the world. Valley of Flowers moved from Himalayan myth to modern Tokyo. Faith Connections captured the Kumbh Mela, the largest gathering of people on earth. Angry Indian Goddesses, called India’s first female buddy film, won over audiences in Toronto and Rome.</p>
-          <p>With Last Film Show (2021), he finally turned the camera on his own childhood: a boy at a railway station who falls in love with the light of a projector. The film became India’s official entry to the Academy Awards and won the National Film Award for Best Gujarati Film.</p>
-          <p>Through his company, Monsoon Films, he continues to make films about seekers, and about the light that leads them.</p>
+          <section class="bio__chapter bio__chapter--lede">
+            <h2 class="bio__tag"><span>01</span>Adtala, Saurashtra</h2>
+            <p class="bio__lede">Nalin Kumar Pandya, known to audiences as Pan Nalin, was born in Adtala, a village in the Amreli district of Saurashtra, Gujarat. His father ran a tea stall at a small railway junction, a station he would later describe as nobody’s destination, and much of his childhood was spent on its platforms, watching trains cross the open fields. He didn’t see a film until he was about eight. By then he had already been asking his parents where light comes from, and where it goes at night.</p>
+          </section>
+
+          <blockquote class="bio__quote">
+            <p>Where does light come from, <span>and where does it go at night?</span></p>
+          </blockquote>
+
+          <section class="bio__chapter">
+            <h2 class="bio__tag"><span>02</span>Baroda, Ahmedabad</h2>
+            <p>He never let go of that question. He studied fine art at M.S. University in Baroda and design at NID Ahmedabad, where he ran the film club. He shot some fifty wedding videos to pay his way, and made animations and silent shorts on old cameras found at Ahmedabad’s Sunday flea market. Documentaries for Discovery, Canal+ and the BBC took him across India and into the Himalayas.</p>
+          </section>
+          <section class="bio__chapter">
+            <h2 class="bio__tag"><span>03</span>Samsara, 2001</h2>
+            <p>His first feature, <cite>Samsara</cite> (2001), followed a young monk torn between desire and devotion, and travelled to audiences around the world. <cite>Valley of Flowers</cite> moved from Himalayan myth to modern Tokyo. <cite>Faith Connections</cite> captured the Kumbh Mela, the largest gathering of people on earth. <cite>Angry Indian Goddesses</cite>, called India’s first female buddy film, won over audiences in Toronto and Rome.</p>
+          </section>
+          <section class="bio__chapter">
+            <h2 class="bio__tag"><span>04</span>Last Film Show, 2021</h2>
+            <p>With <cite>Last Film Show</cite> (2021), he finally turned the camera on his own childhood: a boy at a railway station who falls in love with the light of a projector. The film became India’s official entry to the Academy Awards and won the National Film Award for Best Gujarati Film.</p>
+          </section>
+          <section class="bio__chapter">
+            <h2 class="bio__tag"><span>05</span>Mumbai, Paris</h2>
+            <p>Through his company, Monsoon Films, he continues to make films about seekers, and about the light that leads them.</p>
+          </section>
         </div>
 
-        <img class="bio__fade" src="assets/img/card-bottom-blur.png" alt="" aria-hidden="true" />
+        <footer class="bio__films">
+          <p class="bio__films-label">Films</p>
+          <ul>
+            <li>Samsara</li><li>Valley of Flowers</li><li>Faith Connections</li><li>Angry Indian Goddesses</li><li>Last Film Show</li>
+          </ul>
+        </footer>
       </div>
+
+      <!-- Sits on the screen's bottom edge over the card, as if the card ran on
+           into the dark: the cue to scroll. It comes to rest at the card's end. -->
+      <img class="bio__fade" src="assets/img/card-shadow.svg" alt="" aria-hidden="true" />
     </article>
   </main>
 
   <script type="importmap">
     {
       "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/",
-        "@sparkjsdev/spark": "https://sparkjs.dev/releases/spark/2.4.0/spark.module.js"
+        "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"
       }
     }
   </script>

@@ -7,3 +7,16 @@ assets/3d/boy-meshy-textured.glb
 assets/3d/views
 .DS_Store
 **/__pycache__
+work
+.venv
+node_modules
+# 3D prototypes and comparison renders (the live hero uses sky3d.js + assets/sky3)
+compare
+scene.html
+scene3d.js
+sky.html
+sky2.html
+sky3.html
+assets/scene
+assets/sky
+assets/sky2

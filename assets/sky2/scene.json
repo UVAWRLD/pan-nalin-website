@@ -1,0 +1,161 @@
+{
+ "width": 2000,
+ "height": 1125,
+ "focal": 4640.0,
+ "cx": 1000.0,
+ "cy": 562.5,
+ "pivot_depth": 7.01953125,
+ "sky": {
+  "image": "sky.webp",
+  "rect": [
+   -900,
+   -1300,
+   3800,
+   2585
+  ]
+ },
+ "horizon": 1010.0,
+ "camera_height": 1.0,
+ "frames": {
+  "wide": [
+   0,
+   0,
+   2000,
+   1125
+  ],
+  "tall": [
+   0,
+   -1215,
+   2000,
+   2340
+  ]
+ },
+ "layers": [
+  {
+   "name": "boy_4",
+   "color": "boy_4.webp",
+   "color_half": "boy_4@half.webp",
+   "alpha": "boy_4-alpha.png",
+   "alpha_half": "boy_4@half-alpha.png",
+   "depth": "boy_4-depth.png",
+   "inv_min": 0.12404905259609222,
+   "inv_max": 0.1300574690103531,
+   "grid": [
+    129,
+    197
+   ],
+   "rect": [
+    1125.0,
+    733.0,
+    255.0,
+    392.0
+   ],
+   "cell": 2.0
+  },
+  {
+   "name": "boy_2",
+   "color": "boy_2.webp",
+   "color_half": "boy_2@half.webp",
+   "alpha": "boy_2-alpha.png",
+   "alpha_half": "boy_2@half-alpha.png",
+   "depth": "boy_2-depth.png",
+   "inv_min": 0.13751927018165588,
+   "inv_max": 0.14237020909786224,
+   "grid": [
+    141,
+    278
+   ],
+   "rect": [
+    535.0,
+    571.0,
+    279.0,
+    554.0
+   ],
+   "cell": 2.0
+  },
+  {
+   "name": "boy_5",
+   "color": "boy_5.webp",
+   "color_half": "boy_5@half.webp",
+   "alpha": "boy_5-alpha.png",
+   "alpha_half": "boy_5@half-alpha.png",
+   "depth": "boy_5-depth.png",
+   "inv_min": 0.13806353509426117,
+   "inv_max": 0.14412669837474823,
+   "grid": [
+    166,
+    264
+   ],
+   "rect": [
+    1328.0,
+    599.0,
+    330.0,
+    526.0
+   ],
+   "cell": 2.0
+  },
+  {
+   "name": "boy_6",
+   "color": "boy_6.webp",
+   "color_half": "boy_6@half.webp",
+   "alpha": "boy_6-alpha.png",
+   "alpha_half": "boy_6@half-alpha.png",
+   "depth": "boy_6-depth.png",
+   "inv_min": 0.13776063919067383,
+   "inv_max": 0.14452004432678223,
+   "grid": [
+    148,
+    278
+   ],
+   "rect": [
+    1603.0,
+    571.0,
+    293.0,
+    554.0
+   ],
+   "cell": 2.0
+  },
+  {
+   "name": "boy_1",
+   "color": "boy_1.webp",
+   "color_half": "boy_1@half.webp",
+   "alpha": "boy_1-alpha.png",
+   "alpha_half": "boy_1@half-alpha.png",
+   "depth": "boy_1-depth.png",
+   "inv_min": 0.13817226886749268,
+   "inv_max": 0.14531812071800232,
+   "grid": [
+    152,
+    278
+   ],
+   "rect": [
+    63.0,
+    571.0,
+    301.0,
+    554.0
+   ],
+   "cell": 2.0
+  },
+  {
+   "name": "boy_3",
+   "color": "boy_3.webp",
+   "color_half": "boy_3@half.webp",
+   "alpha": "boy_3-alpha.png",
+   "alpha_half": "boy_3@half-alpha.png",
+   "depth": "boy_3-depth.png",
+   "inv_min": 0.16041933000087738,
+   "inv_max": 0.17037524282932281,
+   "grid": [
+    228,
+    315
+   ],
+   "rect": [
+    760.0,
+    497.0,
+    453.0,
+    628.0
+   ],
+   "cell": 2.0
+  }
+ ]
+}

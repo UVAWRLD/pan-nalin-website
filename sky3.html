@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Boys and the sky (3)</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #c9d4dc; overflow: hidden; }
+    canvas { position: fixed; inset: 0; width: 100vw; height: 100vh; display: block; touch-action: pan-y; }
+    /* fine film grain, as in the photo itself */
+    .grain { position: fixed; inset: -50%; pointer-events: none; opacity: 0.07; mix-blend-mode: overlay;
+             background-size: 192px 192px; animation: grain 0.9s steps(6) infinite; }
+    @keyframes grain { 0% { transform: translate(0, 0); } 20% { transform: translate(-3%, 2%); } 40% { transform: translate(2%, -3%); }
+                       60% { transform: translate(-2%, -1%); } 80% { transform: translate(3%, 3%); } 100% { transform: translate(0, 0); } }
+    @media (prefers-reduced-motion: reduce) { .grain { animation: none; } }
+  </style>
+</head>
+<body>
+  <!-- The boys and the sky, in 3D. The camera drifts slowly around them on its
+       own; the pointer (or a finger dragging sideways) steers it. For checking:
+       ?still&yaw=-20&pitch=2 holds a view, ?only=backdrop,boy_3 draws just those. -->
+  <canvas id="scene"></canvas>
+  <div class="grain"></div>
+  <script type="importmap">
+    { "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js" } }
+  </script>
+  <script type="module">
+    import { createSkyScene } from "./sky3d.js";
+    // the grain: a small tile of soft noise, made once
+    {
+      const c = document.createElement("canvas"); c.width = c.height = 192;
+      const g = c.getContext("2d"), d = g.createImageData(192, 192);
+      for (let i = 0; i < d.data.length; i += 4) { const v = 128 + (Math.random() + Math.random() - 1) * 90; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+      g.putImageData(d, 0, 0);
+      document.querySelector(".grain").style.backgroundImage = `url(${c.toDataURL()})`;
+    }
+    const q = new URLSearchParams(location.search);
+    const num = (k, d) => (q.has(k) ? Number(q.get(k)) : d);
+    const small = matchMedia("(max-width: 900px), (pointer: coarse)").matches;
+    const scene = await createSkyScene(document.getElementById("scene"), {
+      base: "assets/sky3/",
+      still: q.has("still"), only: q.get("only")?.split(","), half: small, meshStep: small ? 2 : 1,
+      zoom: num("zoom", 1.06),
+      maxYaw: 5, maxPitch: 1.5,
+      drift: 1, driftSpeed: 0.3, follow: 1.4,
+    });
+    if (q.has("yaw") || q.has("pitch")) scene.setView(num("yaw", 0), num("pitch", 0), num("dolly", 0));
+    scene.start();
+    window.__scene = scene;
+    window.__ready = true;
+  </script>
+</body>
+</html>

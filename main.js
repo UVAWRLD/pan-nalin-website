@@ -29,4 +29,22 @@
   window.addEventListener("scroll", onScroll, { passive: true });
   window.addEventListener("resize", onScroll);
   onScroll();
+
+  // --- The dark fade at the screen's bottom edge says "more below" ---------
+  // As the card's end comes up it melts away: thinner, softer, fainter, over
+  // the last third of a screen.
+  const root = document.documentElement;
+  let last = -1;
+  (function fade() {
+    requestAnimationFrame(fade);
+    if (!card) return;
+    const left = card.getBoundingClientRect().bottom - window.innerHeight;
+    const v = Math.min(Math.max(left / (window.innerHeight * 0.33), 0), 1);
+    const o = v * v * (3 - 2 * v);
+    if (Math.abs(o - last) < 0.002) return;
+    last = o;
+    root.style.setProperty("--fade-o", o.toFixed(3));
+    root.style.setProperty("--fade-s", (0.35 + 0.65 * o).toFixed(3));
+    root.style.setProperty("--fade-b", `${((1 - o) * 14).toFixed(1)}px`);
+  })();
 })();
