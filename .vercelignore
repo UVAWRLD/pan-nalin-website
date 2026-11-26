@@ -5,6 +5,7 @@ tools
 assets/3d/boy-meshy.glb
 assets/3d/boy-meshy-textured.glb
 assets/3d/views
+assets/3d/source
 .DS_Store
 **/__pycache__
 work
