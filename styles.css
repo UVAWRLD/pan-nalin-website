@@ -683,12 +683,21 @@ main {
 
   .bio__handle { top: 10px; width: 120px; }
 
-  .bio__head { grid-template-columns: 1fr auto; margin-left: 0; padding-top: 20px; }
-  .bio__meta { gap: 16px; }
-  .bio__name { margin-top: clamp(64px, 22vw, 150px); font-size: clamp(40px, 10vw, 76px); white-space: normal; }
+  .bio__head { grid-template-columns: 1fr auto; column-gap: 12px; margin-left: 0; padding-top: 20px; }
+  /* The name sits just under the portrait's foot: the portrait starts 64px above the card
+     and is 1.5 times as tall as wide; the name starts 72px down (card and head padding plus
+     the 28px caption row). */
+  .bio__name { margin-top: calc(clamp(104px, 22vw, 160px) * 1.5 - 122px); font-size: clamp(40px, 10vw, 76px); white-space: normal; }
   .bio__role { grid-column: 1 / -1; grid-row: 3; margin-top: 12px; white-space: normal; }
-  .bio__mark { grid-column: 2; grid-row: 1; width: 28px; }
-  .bio__meta { padding-left: clamp(104px, 22vw, 160px); flex-wrap: wrap; gap: 4px 12px; }
+  .bio__mark { grid-column: 2; grid-row: 1; width: 28px; max-width: none; }
+  /* The captions run on one line from just right of the portrait to the sun mark */
+  .bio__meta {
+    --air: 12px;
+    justify-content: space-between;
+    gap: 8px;
+    padding-left: calc(clamp(14px, 4vw, 32px) + clamp(104px, 22vw, 160px) - clamp(20px, 5vw, 44px) + var(--air));
+    white-space: nowrap;
+  }
 
   .bio__text { margin-top: 28px; font-size: 15px; line-height: 1.42; }
   .bio__chapter { grid-template-columns: 1fr; row-gap: 8px; margin-top: 20px; padding-top: 14px; }
@@ -722,9 +731,15 @@ main {
   .nav__dot { font-size: 14px; }
 }
 
-/* Narrow phones: the four captions sit as a tidy two-by-two */
+/* Narrow phones: smaller, tighter captions so the four still fit on one line */
 @media (max-width: 420px) {
-  .bio__meta { display: grid; grid-template-columns: auto auto; justify-content: start; gap: 6px 14px; }
+  .bio__head { column-gap: 10px; }
+  .bio__meta { --air: 10px; gap: 6px; font-size: 10px; letter-spacing: 0.03em; }
+}
+
+/* The narrowest phones have no room for one line: the captions sit two by two */
+@media (max-width: 384px) {
+  .bio__meta { display: grid; grid-template-columns: auto auto; justify-content: start; gap: 6px 14px; letter-spacing: 0.09em; }
 }
 
 @media (prefers-reduced-motion: reduce) {
