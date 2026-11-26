@@ -443,6 +443,7 @@ export async function createSkyScene(canvas, options = {}) {
   // and a quick turn of the wrist looks around. Tilting right looks right,
   // tipping the top away looks up into the sky.
   const tilt = { on: false, x0: null, y0: null, angle: 0 };
+  const vel = { yaw: 0, pitch: 0 };
   const onTilt = (e) => {
     if (e.beta == null || e.gamma == null) return;
     const a = (screen.orientation?.angle ?? window.orientation ?? 0) % 360;
@@ -453,8 +454,11 @@ export async function createSkyScene(canvas, options = {}) {
     if (tilt.x0 === null || a !== tilt.angle) { tilt.x0 = lr; tilt.y0 = ud; tilt.angle = a; }
     tilt.x0 += (lr - tilt.x0) * 0.004;
     tilt.y0 += (ud - tilt.y0) * 0.004;
-    steer.yaw = -clamp((lr - tilt.x0) / 16, -1, 1);
-    steer.pitch = clamp((ud - tilt.y0) / 12, -1, 1);
+    // Soft limits (no hard stop at the edge) and a light low-pass that takes
+    // the sensor's shiver out; the spring in tick() does the rest.
+    const yaw = -Math.tanh((lr - tilt.x0) / 18), pitch = Math.tanh((ud - tilt.y0) / 14);
+    steer.yaw += (yaw - steer.yaw) * 0.25;
+    steer.pitch += (pitch - steer.pitch) * 0.25;
     steer.last = performance.now();
   };
   const onDown = (e) => { if (e.pointerType !== "mouse" && !tilt.on) steer.drag = { id: e.pointerId, x: e.clientX, yaw: target.yaw / o.maxYaw }; };
@@ -473,7 +477,16 @@ export async function createSkyScene(canvas, options = {}) {
       target.pitch = (steer.pitch * (1 - idle) + Math.sin(s * 0.13 + 1.3) * idle * 0.7) * o.maxPitch;
     }
     const k = 1 - Math.exp(-dt * o.follow);
-    for (const key of ["yaw", "pitch", "dolly"]) view[key] += (target[key] - view[key]) * k;
+    if (tilt.on) {
+      // A hand-held look: a critically damped spring eases into each turn of
+      // the wrist and settles without the lag of the mouse follow.
+      const w = 4.2;
+      for (const key of ["yaw", "pitch"]) {
+        vel[key] += ((target[key] - view[key]) * w * w - 2 * w * vel[key]) * dt;
+        view[key] += vel[key] * dt;
+      }
+      view.dolly += (target.dolly - view.dolly) * k;
+    } else for (const key of ["yaw", "pitch", "dolly"]) view[key] += (target[key] - view[key]) * k;
     if (Math.abs(target.blur - view.blur) > 1e-4) {
       view.blur += (target.blur - view.blur) * (1 - Math.exp(-dt * o.blurFollow));
       if (Math.abs(target.blur - view.blur) < 2e-3) view.blur = target.blur;

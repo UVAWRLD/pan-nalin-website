@@ -157,51 +157,29 @@ body.is-loading { overflow: hidden; }
   outline: none;
 }
 
-/* Bottom-right group, anchored to the bottom so short screens keep it */
-.intro__discover {
+/* 3D catalog envelope (intro3d.js): the whole screen is the envelope's back.
+   The canvas fades in over the flat paper, then takes over; the seal button
+   becomes the hit area over the string closure and the wax. */
+.intro__envelope {
   position: absolute;
-  right: calc(350.37 * var(--u));
-  bottom: calc(161.6 * var(--u));
-  display: block;
-  width: calc(181.5 * var(--u));
-  min-width: 118px;
-  height: calc(50 * var(--u));
-  min-height: 34px;
-  font-size: max(calc(22.142 * var(--u)), 14px);
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 500ms var(--ease-out);
 }
+.intro.is-3d .intro__envelope { opacity: 1; }
+.intro.is-3d .intro__seal { z-index: 3; aspect-ratio: auto; border-radius: 12px; }
+.intro.is-3d .intro__seal img { opacity: 0; }
+.intro.is-3d .intro__seal:hover,
+.intro.is-3d .intro__seal:focus-visible { transform: none; filter: none; }
+.intro.is-live { background: transparent; }
+/* the envelope slides away first, then the intro lets go */
+body:not(.is-loading) .intro.is-live { transition: opacity 400ms var(--ease-out) 800ms, visibility 0s linear 1200ms; }
 
-.intro__discover-text {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 7.6em;
-  font-weight: 300;
-  font-size: 1em;
-  line-height: 0.873;
-  letter-spacing: -0.03em;
-}
-
-.intro__discover-arrow {
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 1.15em;
-  height: 1.15em;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 500;
-  line-height: 0.873;
-  letter-spacing: -0.03em;
-  transform: rotate(-45deg);
-  transition: transform 400ms var(--ease-out);
-}
-
-.intro__discover:hover .intro__discover-arrow,
-.intro__discover:focus-visible .intro__discover-arrow {
-  transform: rotate(-45deg) translateX(4px);
-}
-
+/* The ox (off the intro for now, kept for later): it walked in the bottom-right corner */
 .intro__ox {
   position: absolute;
   right: calc(167.5 * var(--u));
@@ -312,7 +290,9 @@ body.is-scrolled .site-header::before { opacity: 1; }
 
 .hero {
   position: fixed;
-  inset: 0;
+  inset: 0 0 auto 0;
+  height: 100vh;
+  height: 100lvh;   /* reach under Safari's floating toolbar on iPhone */
   z-index: 0;
   overflow: hidden;
   background: var(--ink);
@@ -533,7 +513,8 @@ main {
   margin-top: calc(26 * var(--cu));
   border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
-.bio__chapter p { margin: 0; }
+.bio__chapter p { margin: 0; text-wrap: pretty; }   /* no lone last words */
+.bio__quote p, .bio__name, .intro__quote p { text-wrap: balance; }
 
 .bio__tag {
   display: flex;
@@ -662,13 +643,6 @@ main {
     width: min(74vw, 44vh, 520px);
   }
 
-  .intro__discover {
-    right: calc(var(--gutter) + clamp(96px, 16vw, 140px) + 18px);
-    bottom: calc(var(--gutter) + 8px);
-    font-size: clamp(14px, 2.2vw, 20px);
-    width: 8.6em;
-    height: 2.3em;
-  }
   .intro__ox {
     right: var(--gutter);
     bottom: var(--gutter);
@@ -714,19 +688,25 @@ main {
   .bio__name { margin-top: clamp(64px, 22vw, 150px); font-size: clamp(40px, 10vw, 76px); white-space: normal; }
   .bio__role { grid-column: 1 / -1; grid-row: 3; margin-top: 12px; white-space: normal; }
   .bio__mark { grid-column: 2; grid-row: 1; width: 28px; }
-  .bio__meta { padding-left: clamp(104px, 22vw, 160px); }
+  .bio__meta { padding-left: clamp(104px, 22vw, 160px); flex-wrap: wrap; gap: 4px 12px; }
 
   .bio__text { margin-top: 28px; font-size: 15px; line-height: 1.42; }
   .bio__chapter { grid-template-columns: 1fr; row-gap: 8px; margin-top: 20px; padding-top: 14px; }
   .bio__lede { grid-column: 1; width: auto; font-size: clamp(17px, 4.4vw, 21px); line-height: 1.3; }
   .bio__chapter p { max-width: 62ch; }
   .bio__quote { margin: 40px 0 32px; }
-  .bio__quote p { font-size: clamp(24px, 6.4vw, 36px); text-indent: -0.36em; padding-left: 0.36em; }
+  .bio__quote p { max-width: 14em; font-size: clamp(24px, 6.4vw, 36px); text-indent: -0.36em; padding-left: 0.36em; }
   .bio__films { grid-template-columns: 1fr; row-gap: 8px; margin-top: 40px; padding-top: 14px; }
   .bio__films ul { gap: 8px 24px; }
 
 
   .bio__fade { --fh: 64px; }
+}
+
+/* Short landscape screens: the envelope sits to the right of the quote */
+@media (max-width: 1099.98px) and (orientation: landscape) {
+  .intro__quote { width: min(44vw, 589px); }
+  .intro__quote p { font-size: clamp(32px, min(6vw, 10vh), 64px); }
 }
 
 /* Small phones: stack the nav under the logo so nothing collides */
@@ -742,10 +722,14 @@ main {
   .nav__dot { font-size: 14px; }
 }
 
+/* Narrow phones: the four captions sit as a tidy two-by-two */
+@media (max-width: 420px) {
+  .bio__meta { display: grid; grid-template-columns: auto auto; justify-content: start; gap: 6px 14px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .intro,
   .intro__seal,
-  .intro__discover-arrow,
   .hero__image,
   .hero__canvas { transition: none; }
   .hero__grain,

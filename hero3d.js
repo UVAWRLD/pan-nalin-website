@@ -51,6 +51,7 @@ async function start() {
     scene = await createSkyScene(canvas, {
       base: "assets/sky3/", half: small, meshStep: small ? 2 : 1,
       pullFrames: true, closeFill: 0.62, closeMax: 0.66, blurImage: "assets/sky3/sky-blur.webp", maxYaw: 5, maxPitch: 1.5, drift: 1, driftSpeed: 0.3, follow: 1.4,
+      maxPixelRatio: matchMedia("(pointer: coarse)").matches ? 1.6 : 2,   // phones: fewer pixels, steadier frames
     });
   } catch (error) {
     console.warn("3D hero unavailable, keeping the photo:", error);
@@ -172,6 +173,8 @@ function skyTransition(scene, pullDistance) {
   // scrolled through. Past that line the transition plays on its own and the
   // card springs back into place with a little overshoot.
   const root = document.documentElement;
+  // --hold lives on the card's own box: on the root it would restyle the whole page every frame.
+  const holder = document.querySelector(".bio") || root;
   const first = document.querySelector(".bio__lede");
   const DURATION = 1600, BACK = 0.25, PEEK = 0.16, STRETCH = 0.92, AVG = 0.62;
   const s = { state: "idle", v: 0, from: 0, to: 0, start: 0, hold: 0, hv: 0, shown: -1 };
@@ -228,7 +231,7 @@ function skyTransition(scene, pullDistance) {
     s.hold += s.hv;
     if (Math.abs(s.hold - s.shown) > 0.05) {
       s.shown = s.hold;
-      root.style.setProperty("--hold", `${s.hold.toFixed(1)}px`);
+      holder.style.setProperty("--hold", `${s.hold.toFixed(1)}px`);
     }
   })(performance.now());
 }
@@ -242,10 +245,8 @@ function tiltSteering(scene) {
   const DOE = window.DeviceOrientationEvent;
   if (!DOE) return;
   if (typeof DOE.requestPermission !== "function") return go("granted");
+  // iOS asks only when the seal is tapped (main.js); until then, or if access
+  // is refused, a finger drag steers.
   if (window.__tilt) return void window.__tilt.then(go);
-  const ask = () => {
-    removeEventListener("touchend", ask);
-    (window.__askTilt ? window.__askTilt() : DOE.requestPermission()).then(go, () => {});
-  };
-  addEventListener("touchend", ask, { passive: true });
+  document.addEventListener("pannalin:enter", () => window.__tilt?.then(go), { once: true });
 }
